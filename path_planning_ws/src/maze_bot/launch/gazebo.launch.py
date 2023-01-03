@@ -10,11 +10,12 @@ def generate_launch_description():
     urdf_file = os.path.join(package_share_dir, "urdf", "maze_bot.urdf")
 
     model_path, plugin_path, media_path = GazeboRosPaths.get_paths()
+    
     env = {
-        "GAZEBO_MODEL_PATH": model_path, # as we only to add maze_bot(model) into gazebo models path
+        "GAZEBO_MODEL_PATH": "/home/kaushik/Documents/ROS2-Path-Planning-and-Maze-Solving/path_planning_ws/install/maze_bot/share/maze_bot/..",
         "GAZEBO_PLUGIN_PATH": plugin_path,
         "GAZEBO_RESOURCE_PATH": media_path,
-    }
+    }                         
     return LaunchDescription(
         [
             ExecuteProcess(
@@ -25,8 +26,8 @@ def generate_launch_description():
             Node(
                 package="gazebo_ros",
                 executable="spawn_entity.py",
-                arguments=["-entity","maze_bot","-b","-file", urdf_file,
-                ],
+                arguments=["-topic", "robot_description", "-entity", "robot", "-x", "0", "-y", "0", "-z", "0.0"],   # topic is the name of the ROS topic that contains the description of the entity to be spawned
+                
             ),
             Node(
                 package="robot_state_publisher",
