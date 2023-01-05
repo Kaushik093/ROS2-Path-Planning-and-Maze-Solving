@@ -14,6 +14,7 @@ setup(
         (os.path.join('share',package_name,'urdf'),glob('urdf/*')),
         (os.path.join('share',package_name,'meshes'),glob('meshes/*')),
         (os.path.join('share',package_name,'launch'),glob('launch/*')),
+        (os.path.join('share',package_name,'worlds'),glob('worlds/*')),
         
     ],
     install_requires=['setuptools'],
@@ -26,7 +27,9 @@ setup(
     entry_points={
         'console_scripts': [
             'driving_node = maze_bot.driving_node:main',
-            'Goal = maze_bot.go_to_goal:main',
+            'go_to_Goal = maze_bot.go_to_goal:main',
+            'video_recorder  = maze_bot.video_saver:main',
+            'Maze_solver  = maze_bot.maze_solver:main',
             
             
         ],

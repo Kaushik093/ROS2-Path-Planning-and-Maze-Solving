@@ -15,7 +15,7 @@ class MinimalPublisher(Node):
 
     def timer_callback(self):
         msg = Twist()
-        msg.linear.y = 0.5  
+        msg.linear.x = 0.5  
         # msg.angular.z = 0.5
         self.publisher_.publish(msg)
         
