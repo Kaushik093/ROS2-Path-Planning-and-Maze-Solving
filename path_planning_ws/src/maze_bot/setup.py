@@ -30,6 +30,7 @@ setup(
             'go_to_Goal = maze_bot.go_to_goal:main',
             'video_recorder  = maze_bot.video_saver:main',
             'Maze_solver  = maze_bot.maze_solver:main',
+            'bot_localizer  = maze_bot.bot_localization:main',
             
             
         ],

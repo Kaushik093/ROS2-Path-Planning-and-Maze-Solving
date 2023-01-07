@@ -4,7 +4,9 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import os
+import numpy as np
 from geometry_msgs.msg import Twist
+from .bot_localization import bot_localizer
 
 class VideoSaver(Node):
     def __init__(self):
@@ -13,17 +15,21 @@ class VideoSaver(Node):
         self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.maze_solving)
-        
+        self.bot_localiser = bot_localizer()
         self.bridge = CvBridge()
+        self.sat_view=np.zeros((100,130))
     
     def get_video_feed_cb(self, msg):
         frame = self.bridge.imgmsg_to_cv2(msg,'bgr8')
-        cv2.imshow('output',frame)
+        self.sat_view = frame
+        cv2.imshow('sat view',self.sat_view)
         cv2.waitKey(1)
     
     def maze_solving(self):
+        frame_disp = self.sat_view.copy()
+        self.bot_localiser.localise_bot(self.sat_view, frame_disp)
         msg = Twist()
-        msg.linear.x = 0.1
+        msg.linear.x = 0.0
         # msg.angular.z = 0.5
         self.publisher_.publish(msg)
     
