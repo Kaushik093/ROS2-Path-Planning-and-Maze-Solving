@@ -55,37 +55,37 @@ class bot_mapper():
     def display_connected_nodes(self,curr_node,neighbor_node,case="Unkown",color=(0,0,255)):
         curr_pixel = (curr_node[1],curr_node[0])
         neighbor_pixel = (neighbor_node[1],neighbor_node[0])
-        # self.maze_connect= cv2.circle(self.maze_connect, curr_pixel, 5, (255,0,0))
-        # self.maze_connect= cv2.circle(self.maze_connect, neighbor_pixel, 5, (255,0,0))
+        #self.maze_connect= cv2.circle(self.maze_connect, curr_pixel, 5, (255,0,0))
+        #self.maze_connect= cv2.circle(self.maze_connect, neighbor_pixel, 5, (255,0,0))
         print("----------------------) CONNECTED >> {} << ".format(case))
-        self.maze_connect = cv2.line(self.maze_connect,curr_pixel,neighbor_pixel,color,5)
-
-
-        # self.get_logger().info('in display_connected_nodes')
-        # print("in display_connected_nodes")
+        self.maze_connect = cv2.line(self.maze_connect,curr_pixel,neighbor_pixel,color,1)
         
         cv2.imshow("Nodes Conected", self.maze_connect)
-
-        cv2.waitKey(0)                    
-        self.maze_connect = cv2.line(self.maze_connect,curr_pixel,neighbor_pixel,(255,255,255),1)
+    
+                             
+        # self.maze_connect = cv2.line(self.maze_connect,curr_pixel,neighbor_pixel,(255,255,255),1)
 
 
         # Connect curr_node to neighbors
-    def connect_neighbors(self,maze,node_row,node_col,case,step_l =1 ,step_up=0, totl_cnncted=0):
-        curr_node =(node_row,node_col)
+    def connect_neighbors(self,maze,node_row,node_col,case,step_l = 1,step_up = 0,totl_cnncted = 0):
         
+        curr_node = (node_row,node_col)
+
+        # Check if there is a path around our node        
         if (maze[node_row-step_up][node_col-step_l]>0):
+            # There is a path ==> Look for neighbor node to connect
             neighbor_node = (node_row-step_up,node_col-step_l)
+            # If potential_neighbor_node is actually a key in graph                
             if neighbor_node in self.Graph.graph.keys():
-                print("Neighbor {} already exists".format(neighbor_node))
-                neighbor_case =  self.Graph.graph[neighbor_node]["case"]
-                cost = max (abs(step_l),abs(step_up))
-                totl_cnncted+=1
+                neighbor_case = self.Graph.graph[neighbor_node]["case"]
+                cost = max(abs(step_l),abs(step_up))
+                totl_cnncted +=1
 
                 self.Graph.add_vertex(curr_node,neighbor_node,neighbor_case,cost)
                 self.Graph.add_vertex(neighbor_node,curr_node,case,cost)
                 print("\nConnected {} to {} with Case [step_l,step_up] = [ {} , {} ] & Cost -> {}".format(curr_node,neighbor_node,step_l,step_up,cost))
 
+                # Vertex <-Connected-> Neighbor ===) Cycle through Next Possible Routes [topleft,top,top_right]
                 if not self.connected_left:
                     self.display_connected_nodes(curr_node, neighbor_node,"LEFT",(0,0,255))
                     # Vertex has connected to its left neighbor.                    
@@ -102,38 +102,40 @@ class bot_mapper():
                     step_l  = 0
                     step_up = 1
                     self.connect_neighbors(maze, node_row, node_col, case,step_l,step_up,totl_cnncted)
-            if not self.connected_up:
-                self.display_connected_nodes(curr_node, neighbor_node,"UP",(0,255,0))
-                # Vertex has connected to its up neighbor.
-                self.connected_up = True
-                # Check top-right route now
-                step_l  = -1
-                step_up = 1
-                self.connect_neighbors(maze, node_row, node_col, case,step_l,step_up,totl_cnncted)
+                if not self.connected_up:
+                    self.display_connected_nodes(curr_node, neighbor_node,"UP",(0,255,0))
+                    # Vertex has connected to its up neighbor.
+                    self.connected_up = True
+                    # Check top-right route now
+                    step_l  = -1
+                    step_up = 1
+                    self.connect_neighbors(maze, node_row, node_col, case,step_l,step_up,totl_cnncted)
+                if not self.connected_upright:
+                    self.display_connected_nodes(curr_node, neighbor_node,"UPRIGHT",(255,0,0))
+                    # Vertex has connected to its up-right neighbor.
+                    self.connected_upright = True
+
+            # Still searching for node to connect in a respective direction
             if not self.connected_upright:
-                self.display_connected_nodes(curr_node, neighbor_node,"UPRIGHT",(255,0,0))
-                # Vertex has connected to its up-right neighbor.
-                self.connected_upright = True
-        
-        if not self.connected_upright:
-            if not self.connected_left:
-                # Look a little more left, You'll find it ;)
-                step_l +=1
-            elif not self.connected_upleft:
-                # Look a little more (diagnolly) upleft, You'll find it ;)
-                step_l+=1
-                step_up+=1
-            elif not self.connected_up:
-                # Look a little more up, You'll find it ;)
-                step_up+=1
-            elif not self.connected_upright:
-                # Look a little more upright, You'll find it ;)
-                step_l-=1
-                step_up+=1
+                if not self.connected_left:
+                    # Look a little more left, You'll find it ;)
+                    step_l +=1
+                elif not self.connected_upleft:
+                    # Look a little more (diagnolly) upleft, You'll find it ;)
+                    step_l+=1
+                    step_up+=1
+                elif not self.connected_up:
+                    # Look a little more up, You'll find it ;)
+                    step_up+=1
+                elif not self.connected_upright:
+                    # Look a little more upright, You'll find it ;)
+                    step_l-=1
+                    step_up+=1
                 self.connect_neighbors(maze, node_row, node_col, case,step_l,step_up,totl_cnncted)
-        else :
+        else:
+            # No path in the direction you are looking, Cycle to next direction
             if not self.connected_left:
-            # Basically there is a wall on left so just start looking up lft:)
+                # Basically there is a wall on left so just start looking up lft:)
                 self.connected_left = True
                 # Looking upleft now
                 step_l = 1
@@ -145,7 +147,7 @@ class bot_mapper():
                 step_l = 0
                 step_up = 1
                 self.connect_neighbors(maze, node_row, node_col, case, step_l, step_up, totl_cnncted)
-            
+                
 
             elif not self.connected_up:
                 # Basically there is a wall above so just start looking up-right :)
@@ -160,7 +162,6 @@ class bot_mapper():
                 step_l = 0
                 step_up = 0                
                 return     
-
 
 
     @staticmethod
