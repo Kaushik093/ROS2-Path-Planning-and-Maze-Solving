@@ -10,7 +10,7 @@ class bot_localizer():
 
         self.bg_model=[]
 
-        self.maze_Occupancygrid=[]
+        self.maze_og=[]
 
         self.orig_X=0
         self.orig_Y=0
@@ -106,14 +106,14 @@ class bot_localizer():
         self.update_frameofrefrence_parameters(X,Y,W,H,90)
 
     
-        cv2.imshow("1a. rois_mask",rois_mask)
-        cv2.imshow("1b. frame_car_remvd",frame_car_remvd)
-        cv2.imshow("1c. Ground_replica",Ground_replica)
-        cv2.imshow("1d. bg_model",self.bg_model)
-        cv2.imshow("2. maze_og",self.maze_og)
+        # cv2.imshow("1a. rois_mask",rois_mask)
+        # cv2.imshow("1b. frame_car_remvd",frame_car_remvd)
+        # cv2.imshow("1c. Ground_replica",Ground_replica)
+        # cv2.imshow("1d. bg_model",self.bg_model)
+        # cv2.imshow("2. maze_og",self.maze_og)
 
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
 
 
     @staticmethod
