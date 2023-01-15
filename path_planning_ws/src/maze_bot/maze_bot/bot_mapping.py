@@ -29,8 +29,9 @@ class Graph():
             self.graph[vertex]["case"]=case
 
     def display_graph(self):
+        # print(self.graph.items(),"\n")
         for key,value in self.graph.items():
-            print("key{} has value {},{}".format(key,value))
+            print("key{} has value {}".format(key,value))
             
             
 
