@@ -305,6 +305,7 @@ class bot_mapper():
                     if ((row==0) or row==(rows-1) or col==0 or col==(cols-1)):
                         if(row==0):
                             #Start point
+                            print("AT START POINT")
                             # print("Start point found at [",row,",",col,"]")
                             maze_bgr[row][col] = (0,128,255)
                             cv2.imshow("Maze(IP)",maze_bgr)
@@ -413,4 +414,5 @@ class bot_mapper():
             cv2.imshow("thinned Overlayed on Extracted Maze",extracted_maze_cropped)
 
             self.one_pass(thinned_cropped)
+            
             
