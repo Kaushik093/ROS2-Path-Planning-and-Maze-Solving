@@ -31,6 +31,7 @@ setup(
             'video_recorder  = maze_bot.video_saver:main',
             'Maze_solver  = maze_bot.maze_solver:main',
             'bot_localizer  = maze_bot.bot_localization:main',
+            'bot_planner  = maze_bot.bot_planning:main',
             
             
         ],

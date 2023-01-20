@@ -1,4 +1,5 @@
-import sys
+def cords_to_pts(cords):
+      
+      print( [cord[::-1] for cord in cords])
 
-# sys.setrecursionlimit(10**5)
-print(sys.getrecursionlimit())
+cords_to_pts([(0,0),(1,1),(2,2)])

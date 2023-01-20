@@ -4,7 +4,6 @@ from bot_mapping import bot_mapper
 from bot_planning import DFS
 
 
-
 bot_mapper_ = bot_mapper()
 
 # sys.setrecursionlimit(10**6)
@@ -36,22 +35,34 @@ def main():
     start = bot_mapper_.Graph.start
     # print("Start : {}".format(start))
     
-    end =  (260, 49)
+    end =  (213,205)
 
-    paths = DFS_.get_paths(bot_mapper_.Graph.graph, start, end)
+    # paths = DFS_.get_paths(bot_mapper_.Graph.graph, start, end)
+    paths_costs = DFS_.get_paths_cost(bot_mapper_.Graph.graph, start, end)
+    paths = paths_costs[0]
+    
+    costs = paths_costs[1]
+    min_cost = min(costs)
+    path_to_display = paths[costs.index(min_cost)]
+    # print("Shortest Path : {}".format(path_to_display))
 
-    tiny_rgb = cv2.cvtColor(tiny, cv2.COLOR_GRAY2RGB)
-    # # cv2.imshow("tiny_maze", tiny_rgb)
+    
+    # print("Paths from {} to end {} is : \n {}".format(start, end, paths))
     
 
-    for path in paths:
-        cv2.circle(tiny_rgb,(path[1],path[0]), 2, (120,120,0), -1 )
-        cv2.imshow("tiny_maze", tiny_rgb)
+    tiny_rgb = cv2.cvtColor(tiny, cv2.COLOR_GRAY2RGB)
+    cv2.imshow("tiny_maze", tiny_rgb)
+    
+
+    for path in path_to_display:
+            cv2.circle(tiny_rgb, (path[1],path[0]), 1, (0,0,255), 1)
+        
+            cv2.imshow("tiny_maze", tiny_rgb)
        
     cv2.waitKey(0)
    
-    # # # # Displaying found paths
-    # print("Paths from {} to end {} is : \n {}".format(start, end, paths))
+    # # # Displaying found paths
+    
  
 
 if __name__ == '__main__':

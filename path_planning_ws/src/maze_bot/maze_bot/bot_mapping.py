@@ -53,6 +53,8 @@ class bot_mapper():
 
         self.maze_connect=[]
 
+        self.maze=0
+
     def display_connected_nodes(self,curr_node,neighbor_node,case="Unkown",color=(0,0,255)):
         curr_pixel = (curr_node[1],curr_node[0])
         neighbor_pixel = (neighbor_node[1],neighbor_node[0])
@@ -414,5 +416,6 @@ class bot_mapper():
             cv2.imshow("thinned Overlayed on Extracted Maze",extracted_maze_cropped)
 
             self.one_pass(thinned_cropped)
+            self.maze=thinned_cropped
             
             
