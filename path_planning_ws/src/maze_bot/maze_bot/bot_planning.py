@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import sys
-
+# from .bot_mapping import bot_mapper
 
 sys.setrecursionlimit(10**6)
 
@@ -11,21 +11,39 @@ class bot_path_planner():
     def __init__(self):
         self.DFS = DFS()
 
-    def path_illustrator(self,paths,maze):
+    @staticmethod
+    def path_illustrator(paths,maze):
 
         maze_rgb = cv2.cvtColor(maze, cv2.COLOR_GRAY2RGB)
 
         for path in paths:
+            
             cv2.circle(maze_rgb, (path[1],path[0]), 1, (0,0,255), 1)
             cv2.imshow("maze", maze_rgb)
         cv2.waitKey(0)
 
 
-    def find_path_nd_display(self,graph,start,end,maze,method = "DFS"):
+
+    @staticmethod
+    def find_path_nd_display(graph,start,end,maze,method = "DFS"):
 
         if method == "DFS":
-            paths=DFS.get_paths(graph, start, end)
-            self.path_illustrator(paths,maze)
+            paths = DFS.get_paths(graph, start, end)
+            bot_path_planner.path_illustrator(paths,maze)
+
+        
+
+        elif method == "DFS_shortest":
+            # print("Graph: ",graph)
+            paths_costs=DFS.get_paths_cost(graph, start, end)
+
+            paths = paths_costs[0]
+    
+            costs = paths_costs[1]
+            min_cost = min(costs)
+            path_to_display = paths[costs.index(min_cost)]
+            # print("Paths from {} to end {} is : \n {}".format(start, end, paths))
+            bot_path_planner.path_illustrator(path_to_display,maze)
         
         # elif method == "DFS_shortest":
         #     paths_costs = DFS.get_paths_cost(graph, start, end)
@@ -44,6 +62,7 @@ class DFS():
     @staticmethod
     def get_paths(graph,start,end,path = []):
         
+        
         # Update the path to where ever you have been to
         path = path + [start]
        
@@ -52,7 +71,7 @@ class DFS():
 
         # Handle boundary case [start not part of graph]
         if start not in graph.keys():
-            print("START NOT FOUND")
+            
             return []
         # List to store all possible paths from start to end
         paths = []
@@ -60,14 +79,16 @@ class DFS():
         # 1) Breakdown the complex into simpler subproblems
         for node in graph[start].keys():
             
-            if ( (node not in path) and (node!="case") ):
-                # print(node)
+            if ((node not in path) and (node!="case") ):
+                # print("Node:",node)
                 new_paths = DFS.get_paths(graph,node,end,path)
                 for p in new_paths:
                     # print(paths)
                     paths.append(p)
             
-            return paths
+            # print("Paths: ",paths)
+            
+        return paths
 
 
     @staticmethod

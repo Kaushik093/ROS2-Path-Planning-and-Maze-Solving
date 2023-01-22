@@ -60,7 +60,7 @@ class bot_mapper():
         neighbor_pixel = (neighbor_node[1],neighbor_node[0])
         #self.maze_connect= cv2.circle(self.maze_connect, curr_pixel, 5, (255,0,0))
         #self.maze_connect= cv2.circle(self.maze_connect, neighbor_pixel, 5, (255,0,0))
-        print("----------------------) CONNECTED >> {} << ".format(case))
+        # print("----------------------) CONNECTED >> {} << ".format(case))
         self.maze_connect = cv2.line(self.maze_connect,curr_pixel,neighbor_pixel,color,1)
         
         cv2.imshow("Nodes Conected", self.maze_connect)
@@ -86,7 +86,7 @@ class bot_mapper():
 
                 self.Graph.add_vertex(curr_node,neighbor_node,neighbor_case,cost)
                 self.Graph.add_vertex(neighbor_node,curr_node,case,cost)
-                print("\nConnected {} to {} with Case [step_l,step_up] = [ {} , {} ] & Cost -> {}".format(curr_node,neighbor_node,step_l,step_up,cost))
+                # print("\nConnected {} to {} with Case [step_l,step_up] = [ {} , {} ] & Cost -> {}".format(curr_node,neighbor_node,step_l,step_up,cost))
 
                 # Vertex <-Connected-> Neighbor ===) Cycle through Next Possible Routes [topleft,top,top_right]
                 if not self.connected_left:

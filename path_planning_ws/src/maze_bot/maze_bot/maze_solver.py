@@ -36,10 +36,15 @@ class VideoSaver(Node):
         
 
         start = self.bot_mapper.Graph.start
+        # print(start)
+
         end = self.bot_mapper.Graph.end
+        # print(end)
         maze = self.bot_mapper.maze
+
+        # cv2.imshow("maze", maze)
          
-        self.bot_path_planner.find_path_nd_display(self.bot_mapper.Graph,start,end,maze,method = "DFS")
+        self.bot_path_planner.find_path_nd_display(self.bot_mapper.Graph.graph,start,end,maze,method = "DFS")
         msg = Twist()
         msg.linear.x = 0.0
         # msg.angular.z = 0.5
